@@ -35,6 +35,14 @@ app.get('/', async (req, res) => {
     res.send(response.rows);
 });
 
+// UPDATE
+app.put('/about/:id', async (req, res) => {
+    const { id, name, ingredients, directions } = req.body;
+    console.log('UPDATE recipes SET name = $1, ingredients = $2, directions = $3 WHERE id = $4', [name, ingredients, directions, id]);
+    const response = await pool.query('UPDATE recipes SET name = $2, ingredients = $3, directions = $4 WHERE id = $1', [id, name, ingredients, directions]);
+    res.send("Updated");
+})
+
 // DELETE
 app.delete('/about/:id', async (req, res) => {
     const { id } = req.params;

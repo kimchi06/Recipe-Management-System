@@ -13,7 +13,6 @@ interface Modal {
 
 function Modal({ argId, argName, argIngredients, argDirections, isOpen, functionOnClose }: Modal) {
   // These hooks are for setting and changing the variables upon initialization
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [name, setName] = useState(argName);
   const [ingredients, setIngredients] = useState(argIngredients);
   const [directions, setDirections] = useState(argDirections);
@@ -31,10 +30,29 @@ function Modal({ argId, argName, argIngredients, argDirections, isOpen, function
     setDirections(argDirections);
   }
 
+  async function handleUpdate() {
+    try {
+      const response = await fetch(`http://localhost:8081/about/${recipe.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: recipe.id, name: name, ingredients: ingredients, directions: directions })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to UPDATE');
+      }
+
+    } catch (error) {
+      console.error('Error with UPDATE');
+    }
+    
+    window.location.href = '/';
+  }
+
   async function handleDelete() {
     try {
       const response = await fetch(`http://localhost:8081/about/${recipe.id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
 
       if (!response.ok) {
@@ -95,7 +113,7 @@ function Modal({ argId, argName, argIngredients, argDirections, isOpen, function
                 handleDelete()
               }} className="m-2 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-5 border-b-4 border-red-700 hover:border-red-500 rounded">Delete</button>
               <button onClick={() => {
-                functionOnClose()
+                handleUpdate()
               }}
               type="submit" className="m-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-5 border-b-4 border-blue-700 hover:border-blue-500 rounded">Save</button>
             </div>
