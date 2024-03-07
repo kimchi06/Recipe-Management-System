@@ -7,21 +7,24 @@ interface Modal {
     argName: string;
     argIngredients: string;
     argDirections: string;
+    argTime: string;
     isOpen: boolean;
     functionOnClose: () => void;
 }
 
-function Modal({ argId, argName, argIngredients, argDirections, isOpen, functionOnClose }: Modal) {
+function Modal({ argId, argName, argIngredients, argDirections, argTime, isOpen, functionOnClose }: Modal) {
   // These hooks are for setting and changing the variables upon initialization
   const [name, setName] = useState(argName);
   const [ingredients, setIngredients] = useState(argIngredients);
   const [directions, setDirections] = useState(argDirections);
+  const [time, setTime] = useState(argTime);
 
   var recipe: Recipe = {
     id: argId,
     name: argName,
     ingredients: argIngredients,
-    directions: argDirections
+    directions: argDirections,
+    time: argTime
   }
 
   function restore() {
@@ -30,22 +33,27 @@ function Modal({ argId, argName, argIngredients, argDirections, isOpen, function
     setDirections(argDirections);
   }
 
+  // Date formatting
+  var displayDate = new Date(recipe.time).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"}) + ", " +
+                    new Date(recipe.time).toLocaleTimeString('en-us');
+
   async function handleUpdate() {
-    try {
-      const response = await fetch(`http://localhost:8081/about/${recipe.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: recipe.id, name: name, ingredients: ingredients, directions: directions })
-      });
+    if (name != recipe.name || ingredients != recipe.ingredients || directions != recipe.directions) {
+      try {
+        const response = await fetch(`http://localhost:8081/about/${recipe.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: recipe.id, name: name, ingredients: ingredients, directions: directions, time: new Date().toString() })
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to UPDATE');
+        if (!response.ok) {
+          throw new Error('Failed to UPDATE');
+        }
+
+      } catch (error) {
+        console.error('Error with UPDATE');
       }
-
-    } catch (error) {
-      console.error('Error with UPDATE');
     }
-    
     window.location.href = '/';
   }
 
@@ -78,7 +86,8 @@ function Modal({ argId, argName, argIngredients, argDirections, isOpen, function
         restore()
       }} 
       className="float-right text-2xl my-2 mr-6 px-3 pb-1 bg-red-500 hover:bg-red-400 text-white font-bold border-b-4 border-red-700 hover:border-red-500 rounded">x</button>
-      <p className="text-4xl mx-6 mt-2">Edit recipe</p> <br></br>
+      <p className="text-4xl mx-6 my-4">Edit recipe</p>
+      <p className="text-sm mx-6 text-slate-500 italic">Last modified: {displayDate}</p>
         <div className="flex justify-center items-center">
           <div className="w-11/12 mx-3 no-scrollbar overflow-y-auto max-h-screen content-start justify-normal items-center" style={{height: "510px"}}>
             <div>
@@ -107,6 +116,10 @@ function Modal({ argId, argName, argIngredients, argDirections, isOpen, function
               className="min-h-[120px] resize-none bg-slate-300 appearance-none border-2 border-slate-400 rounded w-full py-2 px-4 text-slate-500 leading-tight focus:outline-none focus:text-slate-600 focus:border-slate-500" 
               onChange={e => setDirections(e.target.value)}
               ></textarea> <br></br>
+            </div>
+            <div>
+              <input value={time}
+              type="hidden"></input>
             </div>
             <div className="flex justify-center items-center">
               <button onClick={() => {

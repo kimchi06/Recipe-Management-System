@@ -3,7 +3,7 @@ import { Recipe } from './List';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 
-function Tile({ id, name, ingredients, directions }: Recipe) {
+function Tile({ id, name, ingredients, directions, time }: Recipe) {
   const [checkIsOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -12,7 +12,8 @@ function Tile({ id, name, ingredients, directions }: Recipe) {
     id: id,
     name: name,
     ingredients: ingredients,
-    directions: directions
+    directions: directions,
+    time: time
   }
 
   function openModal(id: number) {
@@ -33,7 +34,7 @@ function Tile({ id, name, ingredients, directions }: Recipe) {
   return (
     <div onClick={() => openModal(recipe.id)}>
       <div className="m-4 px-6 pt-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl outline outline-2 outline-blue-400 text-slate-200 text-xl select-none" style={{height: "80px"}}>{ name }</div>
-      <Modal argId={recipe.id} argName={recipe.name} argIngredients={recipe.ingredients} argDirections={recipe.directions} isOpen={checkIsOpen} functionOnClose={closeModal}></Modal>
+      <Modal argId={recipe.id} argName={recipe.name} argIngredients={recipe.ingredients} argDirections={recipe.directions} argTime={recipe.time} isOpen={checkIsOpen} functionOnClose={closeModal}></Modal>
     </div>
   );
 }

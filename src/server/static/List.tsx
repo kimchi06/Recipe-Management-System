@@ -7,6 +7,7 @@ export interface Recipe {
   name: string;
   ingredients: string;
   directions: string;
+  time: string;
 }
 
 function List() {
@@ -27,7 +28,8 @@ function List() {
           id: item.id,
           name: item.name,
           ingredients: item.ingredients,
-          directions: item.directions
+          directions: item.directions,
+          time: item.time
         }))
         setRecipes(items)
 
@@ -59,7 +61,7 @@ function List() {
               <div>
                 {/* Otherwise, display tiles */}
                 { recipes.map((recipe, index) => (
-                  <Tile key={index} id={recipe.id} name={recipe.name} ingredients={recipe.ingredients} directions={recipe.directions} />
+                  <Tile key={index} id={recipe.id} name={recipe.name} ingredients={recipe.ingredients} directions={recipe.directions} time={recipe.time} />
                 ))}
               </div>
             )}

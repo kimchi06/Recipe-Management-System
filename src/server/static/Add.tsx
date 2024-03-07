@@ -1,6 +1,5 @@
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Recipe } from './List';
 
 function Add() {
   const [name, setName] = useState("");
@@ -16,20 +15,12 @@ function Add() {
   async function handleCreate(e: FormEvent<HTMLFormElement>) {
     // Prevent refresh at button click
     e.preventDefault();
-    
-    // Recipe to be added
-    const recipe: Recipe = {
-      id: 0,
-      name: name,
-      ingredients: ingredients,
-      directions: directions
-    };
 
     try {
       const response = await fetch(`http://localhost:8081/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, ingredients: ingredients, directions: directions })
+        body: JSON.stringify({ name: name, ingredients: ingredients, directions: directions, time: new Date().toString() })
       });
   
       if (!response.ok) {
@@ -37,7 +28,7 @@ function Add() {
       }
 
     } catch (error) {
-      console.error('Error with POST')
+      console.error('Error with POST', error)
     }
     
     window.location.href = '/';
