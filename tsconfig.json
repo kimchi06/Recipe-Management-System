@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "server.js"  ]
+, "../server/server.js", "tsconfig.json"  ]
 }
