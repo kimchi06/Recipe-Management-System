@@ -71,7 +71,7 @@ function List() {
   return (
     <div className="bg-gradient-to-r from-slate-900 to-sky-900 flex items-center justify-center h-screen">
       <div className="bg-gradient-to-r from-blue-400 to-blue-500 w-2/5 rounded-lg outline outline-4 outline-blue-400" style={{height: "750px"}}>
-        <div className="p-10 font-raleway text-6xl font-bold text-slate-200">Recipe app</div>
+        <div className="p-10 font-raleway text-6xl font-bold text-slate-200">RecipeZ</div>
         <div className="px-10 text-slate-200 font-medium text-2xl">Saved recipes
           <div className="mt-2 p-2 no-scrollbar overflow-y-auto max-h-screen bg-blue-200 rounded-xl outline outline-4 outline-blue-400 content-start justify-normal items-center" style={{height: "440px"}}>
             {/* Put tiles in here-- take 'recipe' from 'recipes' and pass in parameters */}
