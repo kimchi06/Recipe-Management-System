@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import List from './server/static/List';
-import Add from './server/static/Add';
+import List from './static/List';
+import Add from './static/Add';
 
 function App() {
   return (
